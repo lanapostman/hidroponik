@@ -57,7 +57,7 @@ void showResponse(int waitTime) {
 
 boolean dataWrite() {
   String cmd = "AT+CIPSTART=\"TCP\",\""; // TCP connection
-  cmd += "192.168.100.5"; // hostname
+  cmd += "192.168.100.3"; // hostname
   cmd += "\",80";
   espSerial.println(cmd);
   if (DEBUG) Serial.println(cmd);
@@ -74,7 +74,7 @@ boolean dataWrite() {
   getStr += tdsValue;
   getStr +="&data4=";
   getStr += ketinggian;
-  getStr += " HTTP/1.1\r\nHost:192.168.100.5\r\n\r\n";
+  getStr += " HTTP/1.1\r\nHost:192.168.100.3\r\n\r\n";
   
  
   // send data length
@@ -141,31 +141,9 @@ void loop() {
   lcd.clear();
   // pH Sensor
   // put your main code here, to run repeatedly:
-  int buf[10];                //buffer for read analog
-  for (int i = 0; i < 10; i++) //Get 10 sample value from the sensor for smooth the value
-  {
-    buf[i] = analogRead(SensorPin);
-    delay(10);
-  }
-  for (int i = 0; i < 9; i++) //sort the analog from small to large
-  {
-    for (int j = i + 1; j < 10; j++)
-    {
-      if (buf[i] > buf[j])
-      {
-        int temp = buf[i];
-        buf[i] = buf[j];
-        buf[j] = temp;
-      }
-    }
-  }
-  avgValue = 0;
-  for (int i = 2; i < 8; i++)               //take the average value of 6 center sample
-    avgValue += buf[i];
-  float phValue = (float)avgValue * 5.0 / 1024 / 6; //convert the analog into millivolt
-  phValue = 3.5 * phValue + Offset; 
   
-    /*int sensorValue = analogRead(A2);
+  
+    int sensorValue = analogRead(A2);
     voltage = sensorValue * (5.0 / 1023.0);
     sensorph = voltage * (14.000 / 3.148);
 
@@ -183,7 +161,7 @@ void loop() {
       lcd.setCursor(0,0);
       lcd.print("PH     :");
       lcd.setCursor(9,0);
-      lcd.print(phValue, 2);
+      lcd.print(sensorph);
       lcd.setCursor(0,1);
       lcd.print("Nutrisi:");
       lcd.setCursor(9,1);
